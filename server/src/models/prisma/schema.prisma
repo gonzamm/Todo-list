@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Category {
+  @@map(name:"category")
+  id Int @default(autoincrement()) @id
+  tittle String
+  tasks Task[]
+}
+
+model Task {
+  @@map(name:"task")
+  id Int @default(autoincrement()) @id
+  description String @db.VarChar(500)
+  state Boolean
+  category Category @relation(fields: [category_id], references: [id])
+  category_id Int
+}
